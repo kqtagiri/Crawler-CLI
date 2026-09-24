@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os/signal"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 
@@ -20,7 +21,23 @@ type Page struct {
 	Links []string
 }
 
-func CreateRequest(ctx context.Context, client *http.Client, url string) (*html.Node, error) {
+type Crawler struct {
+	client  *http.Client
+	visited map[string]bool
+	mtx     sync.Mutex
+}
+
+func NewCrawler() *Crawler {
+
+	return &Crawler{
+		client:  &http.Client{Timeout: 15 * time.Second},
+		visited: map[string]bool{},
+		mtx:     sync.Mutex{},
+	}
+
+}
+
+func (crawler *Crawler) CreateRequest(ctx context.Context, url string) (*html.Node, error) {
 
 	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -31,7 +48,7 @@ func CreateRequest(ctx context.Context, client *http.Client, url string) (*html.
 		return nil, err
 	}
 
-	resp, err := client.Do(req)
+	resp, err := crawler.client.Do(req)
 	if err != nil {
 		fmt.Println("Error doing request:", err)
 		return nil, err
@@ -53,7 +70,7 @@ func CreateRequest(ctx context.Context, client *http.Client, url string) (*html.
 
 }
 
-func search(links []string, n *html.Node, base *url.URL) []string {
+func (crawler *Crawler) Search(links []string, n *html.Node, base *url.URL) []string {
 
 	if n.Type == html.ElementNode && n.Data == "a" {
 		for _, attr := range n.Attr {
@@ -65,7 +82,9 @@ func search(links []string, n *html.Node, base *url.URL) []string {
 				}
 
 				url := base.ResolveReference(href).String()
-				links = append(links, url)
+				if crawler.IsVisited(url) {
+					links = append(links, url)
+				}
 			}
 
 		}
@@ -73,11 +92,23 @@ func search(links []string, n *html.Node, base *url.URL) []string {
 
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 
-		links = search(links, c, base)
+		links = crawler.Search(links, c, base)
 
 	}
 
 	return links
+
+}
+
+func (crawler *Crawler) IsVisited(url string) bool {
+
+	crawler.mtx.Lock()
+	defer crawler.mtx.Unlock()
+	if !crawler.visited[url] {
+		crawler.visited[url] = true
+		return true
+	}
+	return false
 
 }
 
@@ -89,9 +120,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(ctx, 2*time.Minute)
 	defer cancel()
 
-	client := &http.Client{
-		Timeout: 15 * time.Second,
-	}
+	crawler := NewCrawler()
 
 	urlFlag := flag.String("urls", "", "list of started urls")
 	_ = flag.Int("depth", 1, "max depth")
@@ -105,7 +134,7 @@ func main() {
 	urls := strings.Split(*urlFlag, ",")
 	for _, Url := range urls {
 
-		doc, err := CreateRequest(ctx, client, Url)
+		doc, err := crawler.CreateRequest(ctx, Url)
 		if err != nil {
 			continue
 		}
@@ -115,7 +144,7 @@ func main() {
 			continue
 		}
 
-		links := search(nil, doc, base)
+		links := crawler.Search(nil, doc, base)
 		for _, link := range links {
 
 			fmt.Println(link)

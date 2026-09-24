@@ -81,9 +81,12 @@ func (crawler *Crawler) Search(links []string, n *html.Node, base *url.URL) []st
 					continue
 				}
 
-				url := base.ResolveReference(href).String()
-				if !crawler.IsVisited(url) {
-					links = append(links, url)
+				url := base.ResolveReference(href)
+				if url.Host != base.Host {
+					continue
+				}
+				if !crawler.IsVisited(url.String()) {
+					links = append(links, url.String())
 				}
 			}
 

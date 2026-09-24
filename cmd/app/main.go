@@ -82,7 +82,7 @@ func (crawler *Crawler) Search(links []string, n *html.Node, base *url.URL) []st
 				}
 
 				url := base.ResolveReference(href).String()
-				if crawler.IsVisited(url) {
+				if !crawler.IsVisited(url) {
 					links = append(links, url)
 				}
 			}
@@ -106,9 +106,9 @@ func (crawler *Crawler) IsVisited(url string) bool {
 	defer crawler.mtx.Unlock()
 	if !crawler.visited[url] {
 		crawler.visited[url] = true
-		return true
+		return false
 	}
-	return false
+	return true
 
 }
 

@@ -70,6 +70,42 @@ func (crawler *Crawler) CreateRequest(ctx context.Context, url string) (*html.No
 
 }
 
+func ExtractTitle(n *html.Node) (string, bool) {
+
+	if n.Type == html.ElementNode && n.Data == "title" {
+		title := strings.Join(strings.Fields(GetText(n)), " ")
+		return title, true
+	}
+
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+
+		title, found := ExtractTitle(c)
+		if found {
+			return title, found
+		}
+
+	}
+
+	return "", false
+}
+
+func GetText(n *html.Node) string {
+
+	if n.Type == html.TextNode {
+		return n.Data
+	}
+
+	var s strings.Builder
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+
+		s.WriteString(GetText(c))
+
+	}
+
+	return s.String()
+
+}
+
 func (crawler *Crawler) Search(links []string, n *html.Node, base *url.URL) []string {
 
 	if n.Type == html.ElementNode && n.Data == "a" {

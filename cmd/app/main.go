@@ -106,7 +106,7 @@ func GetText(n *html.Node) string {
 
 }
 
-func (crawler *Crawler) Search(links []string, n *html.Node, base *url.URL) []string {
+func (crawler *Crawler) ExtractLinks(links []string, n *html.Node, base *url.URL) []string {
 
 	if n.Type == html.ElementNode && n.Data == "a" {
 		for _, attr := range n.Attr {
@@ -131,7 +131,7 @@ func (crawler *Crawler) Search(links []string, n *html.Node, base *url.URL) []st
 
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 
-		links = crawler.Search(links, c, base)
+		links = crawler.ExtractLinks(links, c, base)
 
 	}
 
@@ -183,7 +183,7 @@ func main() {
 			continue
 		}
 
-		links := crawler.Search(nil, doc, base)
+		links := crawler.ExtractLinks(nil, doc, base)
 		for _, link := range links {
 
 			fmt.Println(link)

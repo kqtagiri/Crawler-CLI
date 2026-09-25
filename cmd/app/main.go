@@ -21,6 +21,11 @@ type Page struct {
 	Links []string
 }
 
+type PageDepth struct {
+	Url   string
+	Depth int
+}
+
 type Crawler struct {
 	client  *http.Client
 	visited map[string]bool
@@ -117,13 +122,12 @@ func (crawler *Crawler) ExtractLinks(links []string, n *html.Node, base *url.URL
 					continue
 				}
 
-				url := base.ResolveReference(href)
-				if url.Host != base.Host {
+				Url := base.ResolveReference(href)
+				if Url.Host != base.Host {
 					continue
 				}
-				if !crawler.IsVisited(url.String()) {
-					links = append(links, url.String())
-				}
+
+				links = append(links, Url.String())
 			}
 
 		}
@@ -162,7 +166,7 @@ func main() {
 	crawler := NewCrawler()
 
 	urlFlag := flag.String("urls", "", "list of started urls")
-	_ = flag.Int("depth", 1, "max depth")
+	depthFlag := flag.Int("depth", 1, "max depth")
 	_ = flag.Duration("timeout", 2*time.Minute, "overall timeout")
 	_ = flag.Duration("request-timeout", 10*time.Second, "one request timeout")
 	_ = flag.String("output", "result.json", "output result file")
@@ -171,25 +175,47 @@ func main() {
 	flag.Parse()
 
 	urls := strings.Split(*urlFlag, ",")
+	maxDepth := *depthFlag
+
+	queue := []PageDepth{}
 	for _, Url := range urls {
 
-		doc, err := crawler.CreateRequest(ctx, Url)
+		queue = append(queue, PageDepth{Url: Url, Depth: 0})
+
+	}
+
+	for len(queue) > 0 {
+
+		Job := queue[0]
+		queue = queue[1:]
+
+		if crawler.IsVisited(Job.Url) {
+			continue
+		}
+
+		doc, err := crawler.CreateRequest(ctx, Job.Url)
 		if err != nil {
 			continue
 		}
 
-		base, err := url.Parse(Url)
+		base, err := url.Parse(Job.Url)
 		if err != nil {
 			continue
 		}
 
 		links := crawler.ExtractLinks(nil, doc, base)
-		for _, link := range links {
+		title, ok := ExtractTitle(doc)
+		if ok {
+			fmt.Printf("\n\nURL:%s\nTitle:%s\nLinks:\n", Job.Url, title)
+			for _, link := range links {
 
-			fmt.Println(link)
+				fmt.Println("\t", link)
+				if Job.Depth < maxDepth {
+					queue = append(queue, PageDepth{Url: link, Depth: Job.Depth + 1})
+				}
 
+			}
 		}
-
 	}
 
 }

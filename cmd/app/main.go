@@ -27,27 +27,30 @@ type PageDepth struct {
 }
 
 type Crawler struct {
-	client  *http.Client
-	visited map[string]bool
-	mtx     sync.Mutex
+	client     *http.Client
+	visited    map[string]bool
+	mtx        sync.Mutex
+	reqTimeout time.Duration
+	timeout    time.Duration
 }
 
-func NewCrawler() *Crawler {
+func NewCrawler(reqTimeout time.Duration, timeout time.Duration) *Crawler {
 
 	return &Crawler{
 		client: &http.Client{
-			Timeout:       15 * time.Second,
 			CheckRedirect: func(req *http.Request, via []*http.Request) error { return http.ErrUseLastResponse },
 		},
-		visited: map[string]bool{},
-		mtx:     sync.Mutex{},
+		visited:    map[string]bool{},
+		mtx:        sync.Mutex{},
+		reqTimeout: reqTimeout,
+		timeout:    timeout,
 	}
 
 }
 
 func (crawler *Crawler) CreateRequest(ctx context.Context, url string) (*html.Node, error) {
 
-	reqCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	reqCtx, cancel := context.WithTimeout(ctx, crawler.reqTimeout)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(reqCtx, http.MethodGet, url, nil)
@@ -175,22 +178,22 @@ func (crawler *Crawler) IsVisited(url string) bool {
 
 func main() {
 
-	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
-	defer stop()
-
-	ctx, cancel := context.WithTimeout(ctx, 2*time.Minute)
-	defer cancel()
-
-	crawler := NewCrawler()
-
 	urlFlag := flag.String("urls", "", "list of started urls")
 	depthFlag := flag.Int("depth", 1, "max depth")
-	_ = flag.Duration("timeout", 2*time.Minute, "overall timeout")
-	_ = flag.Duration("request-timeout", 10*time.Second, "one request timeout")
+	timeoutFlag := flag.Duration("timeout", 2*time.Minute, "overall timeout")
+	reqTimeoutFlag := flag.Duration("request-timeout", 10*time.Second, "one request timeout")
 	_ = flag.String("output", "result.json", "output result file")
 	_ = flag.String("log", "logs.log", "log file")
 
 	flag.Parse()
+
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	ctx, cancel := context.WithTimeout(ctx, *timeoutFlag)
+	defer cancel()
+
+	crawler := NewCrawler(*reqTimeoutFlag, *timeoutFlag)
 
 	urls := strings.Split(*urlFlag, ",")
 	maxDepth := *depthFlag

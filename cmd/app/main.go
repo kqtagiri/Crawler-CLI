@@ -65,6 +65,11 @@ func (crawler *Crawler) CreateRequest(ctx context.Context, url string) (*html.No
 		return nil, fmt.Errorf("Bad status: %s", resp.Status)
 	}
 
+	if !strings.HasPrefix(resp.Header.Get("Content-Type"), "application/xhtml") && !strings.HasPrefix(resp.Header.Get("Content-Type"), "text/html") {
+		fmt.Println("Get bad url, not html")
+		return nil, fmt.Errorf("Bad url, not html: %s", url)
+	}
+
 	doc, err := html.Parse(resp.Body)
 	if err != nil {
 		fmt.Println("Error parsing html:", err)
@@ -111,31 +116,42 @@ func GetText(n *html.Node) string {
 
 }
 
-func (crawler *Crawler) ExtractLinks(links []string, n *html.Node, base *url.URL) []string {
+func (crawler *Crawler) ExtractLinks(links []string, seen map[string]bool, n *html.Node, base *url.URL) []string {
 
 	if n.Type == html.ElementNode && n.Data == "a" {
 		for _, attr := range n.Attr {
 
-			if attr.Key == "href" && attr.Val != "" {
-				href, err := url.Parse(attr.Val)
-				if err != nil {
-					continue
-				}
-
-				Url := base.ResolveReference(href)
-				if Url.Host != base.Host {
-					continue
-				}
-
-				links = append(links, Url.String())
+			if attr.Key != "href" || attr.Val == "" {
+				continue
 			}
+
+			if strings.HasPrefix(attr.Val, "#") || strings.HasPrefix(attr.Val, "javascript:") {
+				continue
+			}
+
+			href, err := url.Parse(attr.Val)
+			if err != nil {
+				continue
+			}
+
+			Url := base.ResolveReference(href)
+			if Url.Host != base.Host {
+				continue
+			}
+
+			if seen[Url.String()] {
+				continue
+			}
+
+			seen[Url.String()] = true
+			links = append(links, Url.String())
 
 		}
 	}
 
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 
-		links = crawler.ExtractLinks(links, c, base)
+		links = crawler.ExtractLinks(links, seen, c, base)
 
 	}
 
@@ -148,7 +164,6 @@ func (crawler *Crawler) IsVisited(url string) bool {
 	crawler.mtx.Lock()
 	defer crawler.mtx.Unlock()
 	if !crawler.visited[url] {
-		crawler.visited[url] = true
 		return false
 	}
 	return true
@@ -192,6 +207,7 @@ func main() {
 		if crawler.IsVisited(Job.Url) {
 			continue
 		}
+		crawler.visited[Job.Url] = true
 
 		doc, err := crawler.CreateRequest(ctx, Job.Url)
 		if err != nil {
@@ -203,18 +219,19 @@ func main() {
 			continue
 		}
 
-		links := crawler.ExtractLinks(nil, doc, base)
-		title, ok := ExtractTitle(doc)
-		if ok {
-			fmt.Printf("\n\nURL:%s\nTitle:%s\nLinks:\n", Job.Url, title)
-			for _, link := range links {
+		seen := map[string]bool{}
+		links := crawler.ExtractLinks(nil, seen, doc, base)
+		title, _ := ExtractTitle(doc)
+		fmt.Printf("\n\nURL:%s\nTitle:%s\nLinks:\n", Job.Url, title)
+		for _, link := range links {
 
-				fmt.Println("\t", link)
-				if Job.Depth < maxDepth {
+			fmt.Println("\t", link)
+			if Job.Depth < maxDepth {
+				if !crawler.IsVisited(link) {
 					queue = append(queue, PageDepth{Url: link, Depth: Job.Depth + 1})
 				}
-
 			}
+
 		}
 	}
 

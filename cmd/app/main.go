@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"log"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"os"
@@ -41,9 +43,10 @@ type Crawler struct {
 	visited    map[string]bool
 	mtx        sync.Mutex
 	reqTimeout time.Duration
+	logger     *slog.Logger
 }
 
-func NewCrawler(reqTimeout time.Duration) *Crawler {
+func NewCrawler(reqTimeout time.Duration, logger *slog.Logger) *Crawler {
 
 	return &Crawler{
 		client: &http.Client{
@@ -52,6 +55,7 @@ func NewCrawler(reqTimeout time.Duration) *Crawler {
 		visited:    map[string]bool{},
 		mtx:        sync.Mutex{},
 		reqTimeout: reqTimeout,
+		logger:     logger,
 	}
 
 }
@@ -63,30 +67,30 @@ func (crawler *Crawler) CreateRequest(ctx context.Context, url string) (*html.No
 
 	req, err := http.NewRequestWithContext(reqCtx, http.MethodGet, url, nil)
 	if err != nil {
-		fmt.Println("Error when creating new request:", err)
+		crawler.logger.Error("Get next error when creating new request", "err", err)
 		return nil, err
 	}
 
 	resp, err := crawler.client.Do(req)
 	if err != nil {
-		fmt.Println("Error doing request:", err)
+		crawler.logger.Error("Get next error when doing request", "err", err)
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		fmt.Println("Get bad status:", resp.Status)
+		crawler.logger.Error("Get bad status", "status", resp.Status)
 		return nil, fmt.Errorf("Bad status: %s", resp.Status)
 	}
 
 	if !strings.HasPrefix(resp.Header.Get("Content-Type"), "application/xhtml") && !strings.HasPrefix(resp.Header.Get("Content-Type"), "text/html") {
-		fmt.Println("Get bad url, not html")
+		crawler.logger.Warn("Get bad url, not html", "url", url)
 		return nil, fmt.Errorf("Bad url, not html: %s", url)
 	}
 
 	doc, err := html.Parse(resp.Body)
 	if err != nil {
-		fmt.Println("Error parsing html:", err)
+		crawler.logger.Error("Get next error when parsing html", "err", err)
 		return nil, err
 	}
 
@@ -230,8 +234,8 @@ func main() {
 	depthFlag := flag.Int("depth", 1, "max depth")
 	timeoutFlag := flag.Duration("timeout", 2*time.Minute, "overall timeout")
 	reqTimeoutFlag := flag.Duration("request-timeout", 10*time.Second, "one request timeout")
-	_ = flag.String("output", "result.json", "output result file")
-	_ = flag.String("log", "logs.log", "log file")
+	outputFlag := flag.String("output", "result.json", "output result file")
+	logFlag := flag.String("log", "crawler.log", "log file")
 
 	flag.Parse()
 
@@ -241,7 +245,15 @@ func main() {
 	ctx, cancel := context.WithTimeout(ctx, *timeoutFlag)
 	defer cancel()
 
-	crawler := NewCrawler(*reqTimeoutFlag)
+	file, err := os.OpenFile(*logFlag, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatal("Get next error when open log file:", err)
+	}
+	defer file.Close()
+
+	handler := slog.NewTextHandler(file, nil)
+	logger := slog.New(handler)
+	crawler := NewCrawler(*reqTimeoutFlag, logger)
 
 	startUrls := strings.Split(*urlFlag, ",")
 	maxDepth := *depthFlag
@@ -299,15 +311,15 @@ func main() {
 
 	result := BuildTree(pages, startUrls)
 
-	Data, err := json.MarshalIndent(result, "", "    ")
+	data, err := json.MarshalIndent(result, "", "    ")
 	if err != nil {
-		fmt.Println("Get next error when create json file: ", err)
+		crawler.logger.Error("Get next error when create json file", "err", err)
 		return
 	}
 
-	err = os.WriteFile("result.json", Data, 0644)
+	err = os.WriteFile(*outputFlag, data, 0644)
 	if err != nil {
-		fmt.Println("Get next error when writing in the file: ", err)
+		crawler.logger.Error("Get next error when writing in the file", "err", err)
 		return
 	}
 

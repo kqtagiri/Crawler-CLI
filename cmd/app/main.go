@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"os/signal"
 	"strings"
 	"sync"
@@ -26,6 +28,12 @@ type PageDepth struct {
 	Url    string
 	Depth  int
 	Parent string
+}
+
+type Tree struct {
+	Resource string `json:"resource"`
+	Title    string `json:"title"`
+	Links    []Tree `json:"links"`
 }
 
 type Crawler struct {
@@ -176,7 +184,9 @@ func (crawler *Crawler) IsVisited(url string) bool {
 
 }
 
-func BuildTree(pages map[string]*Page, startUrls []string) {
+func BuildTree(pages map[string]*Page, startUrls []string) []Tree {
+
+	result := []Tree{}
 
 	for _, url := range startUrls {
 
@@ -185,12 +195,10 @@ func BuildTree(pages map[string]*Page, startUrls []string) {
 			continue
 		}
 
-		var draw func(page *Page, depth int)
-		draw = func(page *Page, depth int) {
+		var draw func(page *Page, depth int) Tree
+		draw = func(page *Page, depth int) Tree {
 
-			spaces := strings.Repeat("\t", depth)
-			fmt.Printf("%sUrl: %s\n%sTitle: %s\n%sLinks:\n", spaces, page.Url, spaces, page.Title, spaces)
-
+			tree := Tree{Resource: page.Url, Title: page.Title, Links: []Tree{}}
 			for _, link := range page.Links {
 
 				child, ok := pages[link]
@@ -199,16 +207,20 @@ func BuildTree(pages map[string]*Page, startUrls []string) {
 				}
 
 				if child.Parent == page.Url {
-					draw(pages[link], depth+1)
+					tree.Links = append(tree.Links, draw(pages[link], depth+1))
 				}
 
 			}
 
+			return tree
+
 		}
 
-		draw(currPage, 0)
+		result = append(result, draw(currPage, 0))
 
 	}
+
+	return result
 
 }
 
@@ -285,6 +297,18 @@ func main() {
 		}
 	}
 
-	BuildTree(pages, startUrls)
+	result := BuildTree(pages, startUrls)
+
+	Data, err := json.MarshalIndent(result, "", "    ")
+	if err != nil {
+		fmt.Println("Get next error when create json file: ", err)
+		return
+	}
+
+	err = os.WriteFile("result.json", Data, 0644)
+	if err != nil {
+		fmt.Println("Get next error when writing in the file: ", err)
+		return
+	}
 
 }

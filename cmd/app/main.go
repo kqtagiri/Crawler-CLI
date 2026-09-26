@@ -16,14 +16,16 @@ import (
 )
 
 type Page struct {
-	Url   string
-	Title string
-	Links []string
+	Url    string
+	Title  string
+	Parent string
+	Links  []string
 }
 
 type PageDepth struct {
-	Url   string
-	Depth int
+	Url    string
+	Depth  int
+	Parent string
 }
 
 type Crawler struct {
@@ -174,6 +176,42 @@ func (crawler *Crawler) IsVisited(url string) bool {
 
 }
 
+func BuildTree(pages map[string]*Page, startUrls []string) {
+
+	for _, url := range startUrls {
+
+		currPage, ok := pages[url]
+		if !ok {
+			continue
+		}
+
+		var draw func(page *Page, depth int)
+		draw = func(page *Page, depth int) {
+
+			spaces := strings.Repeat("\t", depth)
+			fmt.Printf("%sUrl: %s\n%sTitle: %s\n%sLinks:\n", spaces, page.Url, spaces, page.Title, spaces)
+
+			for _, link := range page.Links {
+
+				child, ok := pages[link]
+				if !ok {
+					continue
+				}
+
+				if child.Parent == page.Url {
+					draw(pages[link], depth+1)
+				}
+
+			}
+
+		}
+
+		draw(currPage, 0)
+
+	}
+
+}
+
 func main() {
 
 	urlFlag := flag.String("urls", "", "list of started urls")
@@ -193,32 +231,34 @@ func main() {
 
 	crawler := NewCrawler(*reqTimeoutFlag)
 
-	urls := strings.Split(*urlFlag, ",")
+	startUrls := strings.Split(*urlFlag, ",")
 	maxDepth := *depthFlag
 
 	queue := []PageDepth{}
-	for _, Url := range urls {
+	for _, Url := range startUrls {
 
-		queue = append(queue, PageDepth{Url: Url, Depth: 0})
+		queue = append(queue, PageDepth{Url: Url, Depth: 0, Parent: ""})
 
 	}
 
+	pages := map[string]*Page{}
+
 	for len(queue) > 0 {
 
-		Job := queue[0]
+		currPage := queue[0]
 		queue = queue[1:]
 
-		if crawler.IsVisited(Job.Url) {
+		if crawler.IsVisited(currPage.Url) {
 			continue
 		}
-		crawler.visited[Job.Url] = true
+		crawler.visited[currPage.Url] = true
 
-		doc, err := crawler.CreateRequest(ctx, Job.Url)
+		doc, err := crawler.CreateRequest(ctx, currPage.Url)
 		if err != nil {
 			continue
 		}
 
-		base, err := url.Parse(Job.Url)
+		base, err := url.Parse(currPage.Url)
 		if err != nil {
 			continue
 		}
@@ -226,17 +266,25 @@ func main() {
 		seen := map[string]bool{}
 		links := crawler.ExtractLinks(nil, seen, doc, base)
 		title, _ := ExtractTitle(doc)
-		fmt.Printf("\n\nURL:%s\nTitle:%s\nLinks:\n", Job.Url, title)
-		for _, link := range links {
 
-			fmt.Println("\t", link)
-			if Job.Depth < maxDepth {
+		pages[currPage.Url] = &Page{
+			Url:    currPage.Url,
+			Title:  title,
+			Parent: currPage.Parent,
+			Links:  links,
+		}
+
+		if currPage.Depth < maxDepth {
+			for _, link := range links {
+
 				if !crawler.IsVisited(link) {
-					queue = append(queue, PageDepth{Url: link, Depth: Job.Depth + 1})
+					queue = append(queue, PageDepth{Url: link, Depth: currPage.Depth + 1, Parent: currPage.Url})
 				}
-			}
 
+			}
 		}
 	}
+
+	BuildTree(pages, startUrls)
 
 }

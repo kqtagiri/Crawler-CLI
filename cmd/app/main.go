@@ -31,10 +31,9 @@ type Crawler struct {
 	visited    map[string]bool
 	mtx        sync.Mutex
 	reqTimeout time.Duration
-	timeout    time.Duration
 }
 
-func NewCrawler(reqTimeout time.Duration, timeout time.Duration) *Crawler {
+func NewCrawler(reqTimeout time.Duration) *Crawler {
 
 	return &Crawler{
 		client: &http.Client{
@@ -43,7 +42,6 @@ func NewCrawler(reqTimeout time.Duration, timeout time.Duration) *Crawler {
 		visited:    map[string]bool{},
 		mtx:        sync.Mutex{},
 		reqTimeout: reqTimeout,
-		timeout:    timeout,
 	}
 
 }
@@ -193,7 +191,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(ctx, *timeoutFlag)
 	defer cancel()
 
-	crawler := NewCrawler(*reqTimeoutFlag, *timeoutFlag)
+	crawler := NewCrawler(*reqTimeoutFlag)
 
 	urls := strings.Split(*urlFlag, ",")
 	maxDepth := *depthFlag

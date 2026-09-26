@@ -35,7 +35,10 @@ type Crawler struct {
 func NewCrawler() *Crawler {
 
 	return &Crawler{
-		client:  &http.Client{Timeout: 15 * time.Second},
+		client: &http.Client{
+			Timeout:       15 * time.Second,
+			CheckRedirect: func(req *http.Request, via []*http.Request) error { return http.ErrUseLastResponse },
+		},
 		visited: map[string]bool{},
 		mtx:     sync.Mutex{},
 	}

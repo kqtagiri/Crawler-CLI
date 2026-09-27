@@ -278,13 +278,7 @@
             {
                 "resource": "https://go.dev/dl/",
                 "title": "All releases - The Go Programming Language",
-                "links": [
-                    {
-                        "resource": "https://go.dev/doc/install/source",
-                        "title": "Installing Go from source - The Go Programming Language",
-                        "links": []
-                    }
-                ]
+                "links": []
             },
             {
                 "resource": "https://go.dev/solutions/",
@@ -314,32 +308,593 @@
             {
                 "resource": "https://go.dev/tour/",
                 "title": "A Tour of Go",
-                "links": []
+                "links": [
+                    {
+                        "resource": "https://go.dev/tour/list",
+                        "title": "A Tour of Go",
+                        "links": []
+                    }
+                ]
             },
             {
                 "resource": "https://go.dev/project",
                 "title": "The Go Project - The Go Programming Language",
-                "links": []
+                "links": [
+                    {
+                        "resource": "https://go.dev/LICENSE",
+                        "title": "- The Go Programming Language",
+                        "links": []
+                    }
+                ]
             },
             {
                 "resource": "https://go.dev/blog/",
                 "title": "The Go Blog - The Go Programming Language",
-                "links": []
+                "links": [
+                    {
+                        "resource": "https://go.dev/blog/simd-experiment",
+                        "title": "Platform-independent SIMD in Go - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/blog/size-specialized-allocations",
+                        "title": "Size-Specialized Memory Allocation - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/blog/goroutine-leak-profiles",
+                        "title": "Goroutine Leak Profiles - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/blog/generic-methods",
+                        "title": "Generic Methods - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/blog/go1.27",
+                        "title": "Go 1.27 is released - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/blog/pkgsite-api",
+                        "title": "Introducing the pkg.go.dev API - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/blog/type-construction-and-cycle-detection",
+                        "title": "Type Construction and Cycle Detection - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/blog/inliner",
+                        "title": "//go:fix inline and the source-level inliner - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/blog/allocation-optimizations",
+                        "title": "Allocating on the Stack - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/blog/gofix",
+                        "title": "Using go fix to modernize Go code - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/blog/all",
+                        "title": "Blog Index - The Go Programming Language",
+                        "links": []
+                    }
+                ]
             },
             {
                 "resource": "https://go.dev/brand",
                 "title": "Brand and Trademark Usage Guidelines - The Go Programming Language",
-                "links": []
+                "links": [
+                    {
+                        "resource": "https://go.dev/blog/go-brand",
+                        "title": "Go's New Brand - The Go Programming Language",
+                        "links": []
+                    }
+                ]
             },
             {
                 "resource": "https://go.dev/conduct",
                 "title": "Go Community Code of Conduct - The Go Programming Language",
-                "links": []
+                "links": [
+                    {
+                        "resource": "https://go.dev/blog/open-source",
+                        "title": "Go, Open Source, Community - The Go Programming Language",
+                        "links": []
+                    }
+                ]
             },
             {
                 "resource": "https://go.dev/wiki/#the-go-community",
                 "title": "Go Wiki: Home - The Go Programming Language",
-                "links": []
+                "links": [
+                    {
+                        "resource": "https://go.dev/wiki/All",
+                        "title": "Go Wiki: All Wiki Pages - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Questions",
+                        "title": "Go Wiki: Asking Questions - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Contributing",
+                        "title": "Go Wiki: Contributing - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GoUsers",
+                        "title": "Go Wiki: GoUsers - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/SuccessStories",
+                        "title": "Go Wiki: Go success stories from around the web - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/WhyGo",
+                        "title": "Go Wiki: Why Go - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/FromXToGo",
+                        "title": "Go Wiki: FromXToGo - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/doc/install/source",
+                        "title": "Installing Go from source - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/InstallFromSource",
+                        "title": "Go Wiki: InstallFromSource - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/InstallTroubleshooting",
+                        "title": "Go Wiki: InstallTroubleshooting - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/doc/install/source#gopath",
+                        "title": "Installing Go from source - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GOPATH",
+                        "title": "Go Wiki: GOPATH - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/IDEsAndTextEditorPlugins",
+                        "title": "Go Wiki: Editors and IDEs for Go - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/CodeTools",
+                        "title": "Go Wiki: CodeTools - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Projects",
+                        "title": "Go Wiki: Projects - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Modules",
+                        "title": "Go Wiki: Go Modules - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/PackagePublishing",
+                        "title": "Go Wiki: PackagePublishing - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Learn",
+                        "title": "Go Wiki: Learn - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/LearnServerProgramming",
+                        "title": "Go Wiki: LearnServerProgramming - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/LearnConcurrency",
+                        "title": "Go Wiki: LearnConcurrency - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/LearnErrorHandling",
+                        "title": "Go Wiki: LearnErrorHandling - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/LearnTesting",
+                        "title": "Go Wiki: LearnTesting - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Mobile",
+                        "title": "Go Wiki: Mobile - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Books",
+                        "title": "Go Wiki: Books - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Blogs",
+                        "title": "Go Wiki: Blogs - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Podcasts",
+                        "title": "Go Wiki: Podcasts - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GoTalks",
+                        "title": "Go Wiki: Go talks - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Livestreams",
+                        "title": "Go Wiki: Livestreams - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Screencasts",
+                        "title": "Go Wiki: Screencasts - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Articles",
+                        "title": "Go Wiki: Articles - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Training",
+                        "title": "Go Wiki: Training - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Courses",
+                        "title": "Go Wiki: Courses - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/NonEnglish",
+                        "title": "Go Wiki: NonEnglish - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/HowToAsk",
+                        "title": "Go Wiki: HowToAsk - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Gopher",
+                        "title": "Go Wiki: Gopher - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GoGetTools",
+                        "title": "Go Wiki: GoGetTools - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GoGetProxyConfig",
+                        "title": "Go Wiki: GoGetProxyConfig - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/cgo",
+                        "title": "Go Wiki: cgo - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/CompilerOptimizations",
+                        "title": "Go Wiki: Compiler And Runtime Optimizations - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GccgoCrossCompilation",
+                        "title": "Go Wiki: GccgoCrossCompilation - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GcToolchainTricks",
+                        "title": "Go Wiki: GcToolchainTricks - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GoGenerateTools",
+                        "title": "Go Wiki: GoGenerateTools - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/AI",
+                        "title": "Go Wiki: AI - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Timeouts",
+                        "title": "Go Wiki: Timeouts and Deadlines - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/LockOSThread",
+                        "title": "Go Wiki: LockOSThread - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/MutexOrChannel",
+                        "title": "Go Wiki: Use a sync.Mutex or a channel? - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/doc/articles/race_detector",
+                        "title": "Data Race Detector - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/SQLDrivers",
+                        "title": "Go Wiki: SQL Database Drivers - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/SQLInterface",
+                        "title": "Go Wiki: SQLInterface - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GoForCPPProgrammers",
+                        "title": "Go Wiki: GoForCPPProgrammers - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GoStrings",
+                        "title": "Go Wiki: GoStrings - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Comments",
+                        "title": "Go Wiki: Comments - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Errors",
+                        "title": "Go Wiki: Errors - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/InterfaceSlice",
+                        "title": "Go Wiki: InterfaceSlice - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Iota",
+                        "title": "Go Wiki: Iota - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/MethodSets",
+                        "title": "Go Wiki: MethodSets - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/PanicAndRecover",
+                        "title": "Go Wiki: PanicAndRecover - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Range",
+                        "title": "Go Wiki: Range Clauses - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/RateLimiting",
+                        "title": "Go Wiki: Rate Limiting - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/SignalHandling",
+                        "title": "Go Wiki: SignalHandling - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/SimultaneousAssignment",
+                        "title": "Go Wiki: Simultaneous Assignment - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/SliceTricks",
+                        "title": "Go Wiki: SliceTricks - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Switch",
+                        "title": "Go Wiki: Switch - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/TableDrivenTests",
+                        "title": "Go Wiki: TableDrivenTests - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/ProviderIntegration",
+                        "title": "Go Wiki: ProviderIntegration - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/HostedContinuousIntegration",
+                        "title": "Go Wiki: HostedContinuousIntegration - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/heapdump13",
+                        "title": "Go Wiki: heapdump13 - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/heapdump14",
+                        "title": "Go Wiki: heapdump14 - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/heapdump15-through-heapdump17",
+                        "title": "Go Wiki: heapdump15-through-heapdump17 - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/doc/contribute",
+                        "title": "Contribution Guide - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/DesignDocuments",
+                        "title": "Go Wiki: DesignDocuments - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Go-Release-Cycle",
+                        "title": "Go Wiki: Go-Release-Cycle - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/X-Repositories",
+                        "title": "Go Wiki: X-Repositories - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/CodeReview",
+                        "title": "Go Wiki: CodeReview - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/CodeReviewComments",
+                        "title": "Go Wiki: Go Code Review Comments - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/HandlingIssues",
+                        "title": "Go Wiki: HandlingIssues - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/DashboardBuilders",
+                        "title": "Go Wiki: DashboardBuilders - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/PerformanceMonitoring",
+                        "title": "Go Wiki: PerformanceMonitoring - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Download-build-farm-failed-logs-and-debugging",
+                        "title": "Go Wiki: Download-build-farm-failed-logs-and-debugging - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/MinimumRequirements",
+                        "title": "Go Wiki: Minimum Requirements - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/PortingPolicy",
+                        "title": "Go Wiki: PortingPolicy - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/ChromeOS",
+                        "title": "Go Wiki: ChromeOS - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Darwin",
+                        "title": "Go Wiki: Go on Darwin - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/DragonFly-BSD",
+                        "title": "Go Wiki: Go on DragonFly BSD - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/FreeBSD",
+                        "title": "Go Wiki: Go on FreeBSD - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/GoArm",
+                        "title": "Go Wiki: Go on ARM - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Linux",
+                        "title": "Go Wiki: Go on Linux - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Ubuntu",
+                        "title": "Go Wiki: Ubuntu - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/NetBSD",
+                        "title": "Go Wiki: Go on NetBSD - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/OpenBSD",
+                        "title": "Go Wiki: Go on OpenBSD - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Plan9",
+                        "title": "Go Wiki: Go on Plan 9 - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Solaris",
+                        "title": "Go Wiki: Go on Solaris - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/Windows",
+                        "title": "Go Wiki: Go on Microsoft Windows - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/WindowsBuild",
+                        "title": "Go Wiki: WindowsBuild - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/WindowsCrossCompiling",
+                        "title": "Go Wiki: Building Windows Go programs on Linux - The Go Programming Language",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://go.dev/wiki/WindowsDLLs",
+                        "title": "Go Wiki: Calling a Windows DLL - The Go Programming Language",
+                        "links": []
+                    }
+                ]
             },
             {
                 "resource": "https://go.dev/copyright",

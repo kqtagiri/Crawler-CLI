@@ -11,8 +11,10 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
+	"path"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"syscall"
 	"time"
 
@@ -22,6 +24,7 @@ import (
 type Page struct {
 	Url    string
 	Title  string
+	Depth  int
 	Parent string
 	Links  []string
 }
@@ -44,6 +47,16 @@ type Crawler struct {
 	mtx        sync.Mutex
 	reqTimeout time.Duration
 	logger     *slog.Logger
+}
+
+var skipExtensions = map[string]bool{
+	".tar": true, ".gz": true, ".tgz": true, ".bz2": true, ".xz": true, ".zip": true, ".pkg": true,
+	".msi": true, ".exe": true, ".pdf": true, ".jpg": true, ".png": true, ".gif": true,
+}
+
+func IsSkippedExt(u *url.URL) bool {
+	ext := strings.ToLower(path.Ext(u.Path))
+	return skipExtensions[ext]
 }
 
 func NewCrawler(reqTimeout time.Duration, logger *slog.Logger) *Crawler {
@@ -157,6 +170,10 @@ func (crawler *Crawler) ExtractLinks(links []string, seen map[string]bool, n *ht
 				continue
 			}
 
+			if IsSkippedExt(Url) {
+				continue
+			}
+
 			if seen[Url.String()] {
 				continue
 			}
@@ -182,13 +199,14 @@ func (crawler *Crawler) IsVisited(url string) bool {
 	crawler.mtx.Lock()
 	defer crawler.mtx.Unlock()
 	if !crawler.visited[url] {
+		crawler.visited[url] = true
 		return false
 	}
 	return true
 
 }
 
-func BuildTree(pages map[string]*Page, startUrls []string) []Tree {
+func (crawler *Crawler) BuildTree(pages map[string]*Page, startUrls []string) []Tree {
 
 	result := []Tree{}
 
@@ -201,6 +219,8 @@ func BuildTree(pages map[string]*Page, startUrls []string) []Tree {
 
 		var draw func(page *Page, depth int) Tree
 		draw = func(page *Page, depth int) Tree {
+
+			crawler.logger.Info("build tree", "url", page.Url, "depth", depth)
 
 			tree := Tree{Resource: page.Url, Title: page.Title, Links: []Tree{}}
 			for _, link := range page.Links {
@@ -225,6 +245,51 @@ func BuildTree(pages map[string]*Page, startUrls []string) []Tree {
 	}
 
 	return result
+
+}
+
+func (crawler *Crawler) Worker(ctx context.Context, jobs chan PageDepth, result chan *Page, counter *atomic.Int64, wg *sync.WaitGroup) {
+
+	defer wg.Done()
+
+	for {
+
+		select {
+		case <-ctx.Done():
+			return
+		case job, ok := <-jobs:
+			if !ok {
+				return
+			}
+
+			doc, err := crawler.CreateRequest(ctx, job.Url)
+			if err != nil {
+				counter.Add(-1)
+				continue
+			}
+
+			base, err := url.Parse(job.Url)
+			if err != nil {
+				counter.Add(-1)
+				continue
+			}
+
+			seen := map[string]bool{}
+			links := crawler.ExtractLinks(nil, seen, doc, base)
+			title, _ := ExtractTitle(doc)
+
+			crawler.logger.Info("worker result", "url", job.Url, "links", len(links), "title", title)
+
+			result <- &Page{
+				Url:    job.Url,
+				Title:  title,
+				Parent: job.Parent,
+				Links:  links,
+				Depth:  job.Depth,
+			}
+		}
+
+	}
 
 }
 
@@ -258,58 +323,72 @@ func main() {
 	startUrls := strings.Split(*urlFlag, ",")
 	maxDepth := *depthFlag
 
-	queue := []PageDepth{}
-	for _, Url := range startUrls {
+	workersCount := 10
+	wg := sync.WaitGroup{}
+	counter := atomic.Int64{}
+	jobs := make(chan PageDepth, 1000)
 
-		queue = append(queue, PageDepth{Url: Url, Depth: 0, Parent: ""})
+	pages := map[string]*Page{}
+	resultChan := make(chan *Page, 1000)
+	for range workersCount {
+
+		wg.Add(1)
+		go crawler.Worker(ctx, jobs, resultChan, &counter, &wg)
 
 	}
 
-	pages := map[string]*Page{}
+	go func() {
 
-	for len(queue) > 0 {
-
-		currPage := queue[0]
-		queue = queue[1:]
-
-		if crawler.IsVisited(currPage.Url) {
-			continue
-		}
-		crawler.visited[currPage.Url] = true
-
-		doc, err := crawler.CreateRequest(ctx, currPage.Url)
-		if err != nil {
-			continue
+		for counter.Load() > 0 {
+			if ctx.Err() != nil {
+				close(jobs)
+				return
+			}
+			time.Sleep(100 * time.Millisecond)
 		}
 
-		base, err := url.Parse(currPage.Url)
-		if err != nil {
-			continue
-		}
+		close(jobs)
 
-		seen := map[string]bool{}
-		links := crawler.ExtractLinks(nil, seen, doc, base)
-		title, _ := ExtractTitle(doc)
+	}()
 
-		pages[currPage.Url] = &Page{
-			Url:    currPage.Url,
-			Title:  title,
-			Parent: currPage.Parent,
-			Links:  links,
-		}
+	go func() {
 
-		if currPage.Depth < maxDepth {
-			for _, link := range links {
+		wg.Wait()
+		close(resultChan)
+
+	}()
+
+	for _, Url := range startUrls {
+
+		counter.Add(1)
+		jobs <- PageDepth{Url: Url, Depth: 0, Parent: ""}
+
+	}
+
+	for page := range resultChan {
+
+		pages[page.Url] = page
+		crawler.logger.Info("page stored", "url", page.Url, "depth", page.Depth, "parent", page.Parent)
+		if page.Depth < maxDepth {
+			for _, link := range page.Links {
 
 				if !crawler.IsVisited(link) {
-					queue = append(queue, PageDepth{Url: link, Depth: currPage.Depth + 1, Parent: currPage.Url})
+					counter.Add(1)
+					select {
+					case jobs <- PageDepth{Url: link, Depth: page.Depth + 1, Parent: page.Url}:
+					case <-ctx.Done():
+						counter.Add(-1)
+					}
+
 				}
 
 			}
 		}
+		counter.Add(-1)
+
 	}
 
-	result := BuildTree(pages, startUrls)
+	result := crawler.BuildTree(pages, startUrls)
 
 	data, err := json.MarshalIndent(result, "", "    ")
 	if err != nil {

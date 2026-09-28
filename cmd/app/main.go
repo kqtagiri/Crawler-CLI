@@ -28,7 +28,19 @@ func main() {
 	flag.Parse()
 
 	if *urlFlag == "" {
-		log.Fatal("Error! Flag urls cannot be unfilled")
+		log.Fatal("Flag urls cannot be unfilled")
+	}
+
+	if *depthFlag < 0 {
+		log.Fatal("Flag depth cannot be < 0")
+	}
+
+	if *timeoutFlag <= 0 {
+		log.Fatal("Flag timeout cannot be <= 0")
+	}
+
+	if *reqTimeoutFlag <= 0 {
+		log.Fatal("Flag reqTimeout cannot be <= 0")
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)

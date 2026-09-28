@@ -173,7 +173,56 @@ func TestExtractLinks(t *testing.T) {
 
 			got := ExtractLinks(tt.links, tt.seen, doc, base)
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("get invalid answer: want = %v, got = %v", tt.want, got)
+				t.Errorf("Get invalid answer: want = %v, got = %v", tt.want, got)
+			}
+
+		})
+
+	}
+
+}
+
+func TestGetText(t *testing.T) {
+
+	tests := []struct {
+		name    string
+		htmlStr string
+		want    string
+	}{
+		{
+			name:    "simple TextNode",
+			htmlStr: `title`,
+			want:    "title",
+		},
+		{
+			name:    "empty text",
+			htmlStr: `<p></p>`,
+			want:    "",
+		},
+		{
+			name:    "nested text",
+			htmlStr: `<p><b>Hello </b><b>World</b></p>`,
+			want:    "Hello World",
+		},
+		{
+			name:    "text in siblings",
+			htmlStr: `<div><p>Hello </p><p>World</p></div>`,
+			want:    "Hello World",
+		},
+	}
+
+	for _, tt := range tests {
+
+		t.Run(tt.name, func(t *testing.T) {
+
+			doc, err := html.Parse(strings.NewReader(tt.htmlStr))
+			if err != nil {
+				t.Fatalf("html.Parse get next error: %v", err)
+			}
+
+			got := GetText(doc)
+			if tt.want != got {
+				t.Errorf("Get invalid answer: want = %v, got = %v", tt.want, got)
 			}
 
 		})

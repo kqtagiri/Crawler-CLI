@@ -1225,3 +1225,98 @@ time=2026-09-27T14:33:08.744+03:00 level=INFO msg="build tree" url=https://go.de
 time=2026-09-27T14:33:08.744+03:00 level=INFO msg="build tree" url=https://go.dev/wiki/WindowsDLLs depth=2
 time=2026-09-27T14:33:08.744+03:00 level=INFO msg="build tree" url=https://go.dev/copyright depth=1
 time=2026-09-27T14:33:08.744+03:00 level=INFO msg="build tree" url=https://go.dev/tos depth=1
+time=2026-09-28T17:16:21.111+03:00 level=INFO msg="worker result" url=https://go.dev links=44 title="The Go Programming Language"
+time=2026-09-28T17:16:21.117+03:00 level=INFO msg="page stored" url=https://go.dev depth=0 parent=""
+time=2026-09-28T17:16:21.384+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:21.406+03:00 level=INFO msg="worker result" url=https://go.dev/talks/ links=38 title="talks - The Go Programming Language"
+time=2026-09-28T17:16:21.406+03:00 level=INFO msg="page stored" url=https://go.dev/talks/ depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.416+03:00 level=INFO msg="worker result" url=https://go.dev/solutions/use-cases links=31 title="Use Cases - The Go Programming Language"
+time=2026-09-28T17:16:21.417+03:00 level=INFO msg="page stored" url=https://go.dev/solutions/use-cases depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.420+03:00 level=INFO msg="worker result" url=https://go.dev/learn/ links=32 title="Get Started - The Go Programming Language"
+time=2026-09-28T17:16:21.420+03:00 level=INFO msg="page stored" url=https://go.dev/learn/ depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.464+03:00 level=INFO msg="worker result" url=https://go.dev/solutions/case-studies links=31 title="Case Studies - The Go Programming Language"
+time=2026-09-28T17:16:21.464+03:00 level=INFO msg="page stored" url=https://go.dev/solutions/case-studies depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.486+03:00 level=INFO msg="worker result" url=https://go.dev/ links=44 title="The Go Programming Language"
+time=2026-09-28T17:16:21.486+03:00 level=INFO msg="page stored" url=https://go.dev/ depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.530+03:00 level=INFO msg="worker result" url=https://go.dev/doc/devel/release links=69 title="Release History - The Go Programming Language"
+time=2026-09-28T17:16:21.531+03:00 level=INFO msg="page stored" url=https://go.dev/doc/devel/release depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.547+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:21.618+03:00 level=INFO msg="worker result" url=https://go.dev/doc/effective_go links=43 title="Effective Go - The Go Programming Language"
+time=2026-09-28T17:16:21.618+03:00 level=INFO msg="page stored" url=https://go.dev/doc/effective_go depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.650+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:21.651+03:00 level=ERROR msg="Get bad status" status="302 Found"
+time=2026-09-28T17:16:21.665+03:00 level=INFO msg="worker result" url=https://go.dev/help links=31 title="Help - The Go Programming Language"
+time=2026-09-28T17:16:21.665+03:00 level=INFO msg="page stored" url=https://go.dev/help depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.668+03:00 level=INFO msg="worker result" url=https://go.dev/ref/spec links=33 title="The Go Programming Language Specification - The Go Programming Language"
+time=2026-09-28T17:16:21.668+03:00 level=INFO msg="page stored" url=https://go.dev/ref/spec depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.669+03:00 level=INFO msg="worker result" url=https://go.dev/wiki/Conferences links=28 title="Go Wiki: Go Conferences and Major Events - The Go Programming Language"
+time=2026-09-28T17:16:21.669+03:00 level=INFO msg="page stored" url=https://go.dev/wiki/Conferences depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.733+03:00 level=INFO msg="worker result" url=https://go.dev/solutions/ links=28 title="Why Go - The Go Programming Language"
+time=2026-09-28T17:16:21.733+03:00 level=INFO msg="page stored" url=https://go.dev/solutions/ depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.742+03:00 level=INFO msg="worker result" url=https://go.dev/solutions/google/ links=32 title="Using Go at Google - The Go Programming Language"
+time=2026-09-28T17:16:21.743+03:00 level=INFO msg="page stored" url=https://go.dev/solutions/google/ depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.793+03:00 level=INFO msg="worker result" url=https://go.dev/solutions/paypal links=30 title="PayPal Taps Go to Modernize and Scale - The Go Programming Language"
+time=2026-09-28T17:16:21.794+03:00 level=INFO msg="page stored" url=https://go.dev/solutions/paypal depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.838+03:00 level=INFO msg="worker result" url=https://go.dev/tour/ links=2 title="A Tour of Go"
+time=2026-09-28T17:16:21.838+03:00 level=INFO msg="page stored" url=https://go.dev/tour/ depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.850+03:00 level=INFO msg="worker result" url=https://go.dev/solutions/americanexpress links=30 title="American Express Uses Go for Payments & Rewards - The Go Programming Language"
+time=2026-09-28T17:16:21.850+03:00 level=INFO msg="page stored" url=https://go.dev/solutions/americanexpress depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.856+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:21.874+03:00 level=INFO msg="worker result" url=https://go.dev/solutions/mercadolibre links=31 title="MercadoLibre Grows with Go - The Go Programming Language"
+time=2026-09-28T17:16:21.874+03:00 level=INFO msg="page stored" url=https://go.dev/solutions/mercadolibre depth=1 parent=https://go.dev
+time=2026-09-28T17:16:21.881+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:21.883+03:00 level=ERROR msg="Get bad status" status="307 Temporary Redirect"
+time=2026-09-28T17:16:21.914+03:00 level=ERROR msg="Get bad status" status="307 Temporary Redirect"
+time=2026-09-28T17:16:21.934+03:00 level=ERROR msg="Get bad status" status="307 Temporary Redirect"
+time=2026-09-28T17:16:21.992+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:22.025+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:22.035+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:22.035+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:22.077+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:22.077+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:22.090+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:22.101+03:00 level=ERROR msg="Get bad status" status="307 Temporary Redirect"
+time=2026-09-28T17:16:22.125+03:00 level=ERROR msg="Get bad status" status="301 Moved Permanently"
+time=2026-09-28T17:16:22.201+03:00 level=ERROR msg="Get bad status" status="307 Temporary Redirect"
+time=2026-09-28T17:16:22.258+03:00 level=INFO msg="worker result" url=https://go.dev/project links=36 title="The Go Project - The Go Programming Language"
+time=2026-09-28T17:16:22.258+03:00 level=INFO msg="page stored" url=https://go.dev/project depth=1 parent=https://go.dev
+time=2026-09-28T17:16:22.290+03:00 level=INFO msg="worker result" url=https://go.dev/blog/ links=38 title="The Go Blog - The Go Programming Language"
+time=2026-09-28T17:16:22.290+03:00 level=INFO msg="page stored" url=https://go.dev/blog/ depth=1 parent=https://go.dev
+time=2026-09-28T17:16:22.292+03:00 level=INFO msg="worker result" url=https://go.dev/brand links=28 title="Brand and Trademark Usage Guidelines - The Go Programming Language"
+time=2026-09-28T17:16:22.292+03:00 level=INFO msg="page stored" url=https://go.dev/brand depth=1 parent=https://go.dev
+time=2026-09-28T17:16:22.430+03:00 level=INFO msg="worker result" url=https://go.dev/conduct links=28 title="Go Community Code of Conduct - The Go Programming Language"
+time=2026-09-28T17:16:22.430+03:00 level=INFO msg="page stored" url=https://go.dev/conduct depth=1 parent=https://go.dev
+time=2026-09-28T17:16:22.465+03:00 level=INFO msg="worker result" url=https://go.dev/wiki/#the-go-community links=128 title="Go Wiki: Home - The Go Programming Language"
+time=2026-09-28T17:16:22.465+03:00 level=INFO msg="page stored" url=https://go.dev/wiki/#the-go-community depth=1 parent=https://go.dev
+time=2026-09-28T17:16:22.497+03:00 level=ERROR msg="Get bad status" status="302 Found"
+time=2026-09-28T17:16:22.506+03:00 level=INFO msg="worker result" url=https://go.dev/tos links=27 title="Terms of Service - The Go Programming Language"
+time=2026-09-28T17:16:22.506+03:00 level=INFO msg="page stored" url=https://go.dev/tos depth=1 parent=https://go.dev
+time=2026-09-28T17:16:22.510+03:00 level=INFO msg="worker result" url=https://go.dev/copyright links=28 title="Copyright - The Go Programming Language"
+time=2026-09-28T17:16:22.511+03:00 level=INFO msg="page stored" url=https://go.dev/copyright depth=1 parent=https://go.dev
+time=2026-09-28T17:16:23.284+03:00 level=INFO msg="worker result" url=https://go.dev/dl/ links=31 title="All releases - The Go Programming Language"
+time=2026-09-28T17:16:23.284+03:00 level=INFO msg="page stored" url=https://go.dev/dl/ depth=1 parent=https://go.dev
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev depth=0
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev/ depth=1
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev/solutions/case-studies depth=1
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev/solutions/use-cases depth=1
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev/learn/ depth=1
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev/ref/spec depth=1
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev/doc/devel/release depth=1
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev/doc/effective_go depth=1
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev/talks/ depth=1
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev/wiki/Conferences depth=1
+time=2026-09-28T17:16:23.361+03:00 level=INFO msg="build tree" url=https://go.dev/help depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/dl/ depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/solutions/ depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/solutions/google/ depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/solutions/paypal depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/solutions/americanexpress depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/solutions/mercadolibre depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/tour/ depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/project depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/blog/ depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/brand depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/conduct depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/wiki/#the-go-community depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/copyright depth=1
+time=2026-09-28T17:16:23.362+03:00 level=INFO msg="build tree" url=https://go.dev/tos depth=1

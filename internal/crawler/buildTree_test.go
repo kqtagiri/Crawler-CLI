@@ -116,9 +116,9 @@ func TestBuildTree(t *testing.T) {
 
 		t.Run(tt.name, func(t *testing.T) {
 
-			cr := newTestCrawler(t)
+			crawler := newTestCrawler(t)
 
-			got := cr.BuildTree(tt.pages, tt.startUrls)
+			got := crawler.BuildTree(tt.pages, tt.startUrls)
 			if !reflect.DeepEqual(tt.want, got) {
 				t.Errorf("Get invalid answer: want = %+v, got = %+v", tt.want, got)
 			}

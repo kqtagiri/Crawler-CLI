@@ -45,8 +45,8 @@ func (crawler *Crawler) CreateRequest(ctx context.Context, url string) (*html.No
 	}
 
 	if !strings.HasPrefix(resp.Header.Get("Content-Type"), "application/xhtml") && !strings.HasPrefix(resp.Header.Get("Content-Type"), "text/html") {
-		crawler.Logger.Warn("Get bad url, not html", "url", url)
-		return nil, fmt.Errorf("Bad url, not html: %s", url)
+		crawler.Logger.Warn("Get not html content-type", "url", url)
+		return nil, fmt.Errorf("Not html content-type: %s", url)
 	}
 
 	doc, err := html.Parse(resp.Body)

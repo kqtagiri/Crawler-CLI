@@ -51,8 +51,6 @@ func (crawler *Crawler) CreateRequest(ctx context.Context, url string) (*html.No
 		return nil, fmt.Errorf("Not html content-type: %s", url)
 	}
 
-	crawler.Logger.Info("", "url", url, "Content-Type", resp.Header.Get("Content-Type"))
-
 	doc, err := html.Parse(resp.Body)
 	if err != nil {
 		crawler.Logger.Error("Get next error when parsing html", "err", err)

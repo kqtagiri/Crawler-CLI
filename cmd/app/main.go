@@ -63,47 +63,31 @@ func main() {
 
 	workersCount := 10
 	wg := sync.WaitGroup{}
-	sch := crawler.NewScheduler()
+
+	resultChan := make(chan *crawler.Page, 1000)
+	sch := crawler.NewScheduler(cr, resultChan, maxDepth)
 
 	pages := map[string]*crawler.Page{}
-	resultChan := make(chan *crawler.Page, 1000)
 	for range workersCount {
 
 		wg.Add(1)
-		go cr.Worker(ctx, sch.Jobs, resultChan, &wg)
+		go cr.Worker(ctx, sch.Jobs, sch.ResultChan, &sch.Counter, &wg)
 
 	}
 
-	go sch.Run(ctx, startUrls)
-
+	schWg := sync.WaitGroup{}
+	schWg.Add(1)
 	go func() {
 
-		wg.Wait()
-		close(resultChan)
+		defer schWg.Done()
+		sch.Run(ctx, startUrls, pages)
 
 	}()
 
-	for page := range resultChan {
+	wg.Wait()
+	close(sch.ResultChan)
 
-		pages[page.Url] = page
-		if page.Depth < maxDepth {
-			for _, link := range page.Links {
-
-				if !cr.IsVisited(link) {
-					select {
-					case sch.AddJobs <- crawler.PageDepth{Url: link, Depth: page.Depth + 1}:
-					case <-ctx.Done():
-						continue
-					}
-
-				}
-
-			}
-		}
-
-	}
-
-	close(sch.AddJobs)
+	schWg.Wait()
 
 	result := cr.BuildTree(pages, startUrls, maxDepth)
 

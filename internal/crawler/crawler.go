@@ -32,6 +32,8 @@ func (crawler *Crawler) CreateRequest(ctx context.Context, url string) (*html.No
 		return nil, err
 	}
 
+	req.Header.Set("User-Agent", "Crawler-CLI/1.0 (+https://github.com/kqtagiri/Crawler-CLI)")
+
 	resp, err := crawler.client.Do(req)
 	if err != nil {
 		crawler.Logger.Error("Get next error when doing request", "err", err)
@@ -48,6 +50,8 @@ func (crawler *Crawler) CreateRequest(ctx context.Context, url string) (*html.No
 		crawler.Logger.Warn("Get not html content-type", "url", url)
 		return nil, fmt.Errorf("Not html content-type: %s", url)
 	}
+
+	crawler.Logger.Info("", "url", url, "Content-Type", resp.Header.Get("Content-Type"))
 
 	doc, err := html.Parse(resp.Body)
 	if err != nil {

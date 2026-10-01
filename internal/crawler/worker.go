@@ -4,10 +4,9 @@ import (
 	"context"
 	"net/url"
 	"sync"
-	"sync/atomic"
 )
 
-func (crawler *Crawler) Worker(ctx context.Context, jobs chan PageDepth, result chan *Page, counter *atomic.Int64, wg *sync.WaitGroup) {
+func (crawler *Crawler) Worker(ctx context.Context, jobs <-chan PageDepth, result chan<- *Page, wg *sync.WaitGroup) {
 
 	defer wg.Done()
 
@@ -23,13 +22,11 @@ func (crawler *Crawler) Worker(ctx context.Context, jobs chan PageDepth, result 
 
 			doc, err := crawler.CreateRequest(ctx, job.Url)
 			if err != nil {
-				counter.Add(-1)
 				continue
 			}
 
 			base, err := url.Parse(job.Url)
 			if err != nil {
-				counter.Add(-1)
 				continue
 			}
 

@@ -11,7 +11,6 @@ import (
 	"os/signal"
 	"strings"
 	"sync"
-	"sync/atomic"
 	"syscall"
 	"time"
 )
@@ -64,38 +63,18 @@ func main() {
 
 	workersCount := 10
 	wg := sync.WaitGroup{}
-	counter := atomic.Int64{}
-	jobs := make(chan crawler.PageDepth, 1000)
+	sch := crawler.NewScheduler()
 
 	pages := map[string]*crawler.Page{}
 	resultChan := make(chan *crawler.Page, 1000)
 	for range workersCount {
 
 		wg.Add(1)
-		go cr.Worker(ctx, jobs, resultChan, &counter, &wg)
+		go cr.Worker(ctx, sch.Jobs, resultChan, &wg)
 
 	}
 
-	for _, Url := range startUrls {
-
-		counter.Add(1)
-		jobs <- crawler.PageDepth{Url: Url, Depth: 0}
-
-	}
-
-	go func() {
-
-		for counter.Load() > 0 {
-			if ctx.Err() != nil {
-				close(jobs)
-				return
-			}
-			time.Sleep(100 * time.Millisecond)
-		}
-
-		close(jobs)
-
-	}()
+	go sch.Run(ctx, startUrls)
 
 	go func() {
 
@@ -107,25 +86,24 @@ func main() {
 	for page := range resultChan {
 
 		pages[page.Url] = page
-		//cr.Logger.Info("page stored", "url", page.Url, "depth", page.Depth)
 		if page.Depth < maxDepth {
 			for _, link := range page.Links {
 
 				if !cr.IsVisited(link) {
-					counter.Add(1)
 					select {
-					case jobs <- crawler.PageDepth{Url: link, Depth: page.Depth + 1}:
+					case sch.AddJobs <- crawler.PageDepth{Url: link, Depth: page.Depth + 1}:
 					case <-ctx.Done():
-						counter.Add(-1)
+						continue
 					}
 
 				}
 
 			}
 		}
-		counter.Add(-1)
 
 	}
+
+	close(sch.AddJobs)
 
 	result := cr.BuildTree(pages, startUrls, maxDepth)
 

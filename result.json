@@ -38,11 +38,6 @@
                         "links": []
                     },
                     {
-                        "resource": "https://crawler-test.com/mobile/separate_desktop_with_different_links_out",
-                        "title": "Desktop and Mobile pages with different links out",
-                        "links": []
-                    },
-                    {
                         "resource": "https://crawler-test.com/mobile/separate_desktop_with_mobile_not_subdomain",
                         "title": "Desktop with Mobile Page not on the subdomain",
                         "links": []
@@ -818,7 +813,7 @@
                         "links": []
                     },
                     {
-                        "resource": "https://crawler-test.com/urls/with_session_id?sessionID=B2lihP8MYMEYbruA23Ze",
+                        "resource": "https://crawler-test.com/urls/with_session_id?sessionID=yCsrC9m3iHSJmvtzeeDW",
                         "title": "Url With Session Id",
                         "links": []
                     },
@@ -1498,6 +1493,11 @@
                         "links": []
                     },
                     {
+                        "resource": "https://crawler-test.com/other/expiring_page_for_removed_test/1790842472.2482336",
+                        "title": "Expiring Page for Removed Test - 1790842472.2482336",
+                        "links": []
+                    },
+                    {
                         "resource": "https://crawler-test.com/other/duplicated_body_content_1",
                         "title": "duplicated body content 1",
                         "links": []
@@ -1636,22 +1636,6 @@
                     {
                         "resource": "https://crawler-test.com/",
                         "title": "Crawler Test Site",
-                        "links": []
-                    }
-                ]
-            },
-            {
-                "resource": "https://crawler-test.com/mobile/separate_desktop_with_different_links_out",
-                "title": "Desktop and Mobile pages with different links out",
-                "links": [
-                    {
-                        "resource": "https://crawler-test.com/",
-                        "title": "Crawler Test Site",
-                        "links": []
-                    },
-                    {
-                        "resource": "https://crawler-test.com/mobile/separate_desktop_with_different_links_in",
-                        "title": "Desktop and Mobile pages with different links in",
                         "links": []
                     }
                 ]
@@ -3626,7 +3610,7 @@
                 ]
             },
             {
-                "resource": "https://crawler-test.com/urls/with_session_id?sessionID=PNzRez7poNZxQJ2NJLwm",
+                "resource": "https://crawler-test.com/urls/with_session_id?sessionID=0wtZX248uSKCx6WQKG2j",
                 "title": "Url With Session Id",
                 "links": [
                     {
@@ -4009,11 +3993,6 @@
                     {
                         "resource": "https://crawler-test.com/mobile/separate_desktop_with_different_links_in",
                         "title": "Desktop and Mobile pages with different links in",
-                        "links": []
-                    },
-                    {
-                        "resource": "https://crawler-test.com/mobile/separate_desktop_with_different_links_out",
-                        "title": "Desktop and Mobile pages with different links out",
                         "links": []
                     },
                     {
@@ -4792,7 +4771,7 @@
                         "links": []
                     },
                     {
-                        "resource": "https://crawler-test.com/urls/with_session_id?sessionID=aiUYJQjXkNYHMBLErL3F",
+                        "resource": "https://crawler-test.com/urls/with_session_id?sessionID=NJlx9OESVjMN9zpQuOyl",
                         "title": "Url With Session Id",
                         "links": []
                     },
@@ -5467,8 +5446,8 @@
                         "links": []
                     },
                     {
-                        "resource": "https://crawler-test.com/other/expiring_page_for_removed_test/1790840384.0842183",
-                        "title": "Expiring Page for Removed Test - 1790840384.0842183",
+                        "resource": "https://crawler-test.com/other/expiring_page_for_removed_test/1790842474.8921382",
+                        "title": "Expiring Page for Removed Test - 1790842474.8921382",
                         "links": []
                     },
                     {
@@ -5585,11 +5564,6 @@
                     {
                         "resource": "https://crawler-test.com/mobile/separate_desktop_with_different_links_in",
                         "title": "Desktop and Mobile pages with different links in",
-                        "links": []
-                    },
-                    {
-                        "resource": "https://crawler-test.com/mobile/separate_desktop_with_different_links_out",
-                        "title": "Desktop and Mobile pages with different links out",
                         "links": []
                     },
                     {
@@ -6368,7 +6342,7 @@
                         "links": []
                     },
                     {
-                        "resource": "https://crawler-test.com/urls/with_session_id?sessionID=R9vFqWOD9ZCZQ2av0xAH",
+                        "resource": "https://crawler-test.com/urls/with_session_id?sessionID=4BQgoVCfqbD4JS9EqiOF",
                         "title": "Url With Session Id",
                         "links": []
                     },
@@ -7040,6 +7014,11 @@
                     {
                         "resource": "https://crawler-test.com/other/crawler_request_headers",
                         "title": "Crawler Request Headers",
+                        "links": []
+                    },
+                    {
+                        "resource": "https://crawler-test.com/other/expiring_page_for_removed_test/1790842474.8832664",
+                        "title": "Expiring Page for Removed Test - 1790842474.8832664",
                         "links": []
                     },
                     {
@@ -8263,8 +8242,8 @@
                 ]
             },
             {
-                "resource": "https://crawler-test.com/other/expiring_page_for_removed_test/1790840387.2976568",
-                "title": "Expiring Page for Removed Test - 1790840387.2976568",
+                "resource": "https://crawler-test.com/other/expiring_page_for_removed_test/1790842477.9890862",
+                "title": "Expiring Page for Removed Test - 1790842477.9890862",
                 "links": [
                     {
                         "resource": "https://crawler-test.com/",
@@ -9154,7 +9133,7 @@
                         "links": []
                     },
                     {
-                        "resource": "http://crawler-test.com/urls/with_session_id?sessionID=LTDoBqK6yqUkcgDUAlWF",
+                        "resource": "http://crawler-test.com/urls/with_session_id?sessionID=5JQRrff4E1kygXEZlRQA",
                         "title": "Url With Session Id",
                         "links": []
                     },
@@ -9831,6 +9810,11 @@
                     {
                         "resource": "http://crawler-test.com/other/crawler_request_headers",
                         "title": "Crawler Request Headers",
+                        "links": []
+                    },
+                    {
+                        "resource": "http://crawler-test.com/other/expiring_page_for_removed_test/1790842478.1347787",
+                        "title": "Expiring Page for Removed Test - 1790842478.1347787",
                         "links": []
                     },
                     {
@@ -10725,7 +10709,7 @@
                         "links": []
                     },
                     {
-                        "resource": "http://crawler-test.com/urls/with_session_id?sessionID=TaERXVU3Ydxti7NJyIfW",
+                        "resource": "http://crawler-test.com/urls/with_session_id?sessionID=MCvQHZ2F9kbnIMQCcPnK",
                         "title": "Url With Session Id",
                         "links": []
                     },
@@ -11405,8 +11389,8 @@
                         "links": []
                     },
                     {
-                        "resource": "http://crawler-test.com/other/expiring_page_for_removed_test/1790840387.4533079",
-                        "title": "Expiring Page for Removed Test - 1790840387.4533079",
+                        "resource": "http://crawler-test.com/other/expiring_page_for_removed_test/1790842478.1225052",
+                        "title": "Expiring Page for Removed Test - 1790842478.1225052",
                         "links": []
                     },
                     {

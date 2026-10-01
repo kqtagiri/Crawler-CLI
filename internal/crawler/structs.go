@@ -8,17 +8,15 @@ import (
 )
 
 type Page struct {
-	Url    string
-	Title  string
-	Depth  int
-	Parent string
-	Links  []string
+	Url   string
+	Title string
+	Depth int
+	Links []string
 }
 
 type PageDepth struct {
-	Url    string
-	Depth  int
-	Parent string
+	Url   string
+	Depth int
 }
 
 type Tree struct {

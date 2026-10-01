@@ -79,7 +79,7 @@ func main() {
 	for _, Url := range startUrls {
 
 		counter.Add(1)
-		jobs <- crawler.PageDepth{Url: Url, Depth: 0, Parent: ""}
+		jobs <- crawler.PageDepth{Url: Url, Depth: 0}
 
 	}
 
@@ -107,14 +107,14 @@ func main() {
 	for page := range resultChan {
 
 		pages[page.Url] = page
-		//cr.Logger.Info("page stored", "url", page.Url, "depth", page.Depth, "parent", page.Parent)
+		//cr.Logger.Info("page stored", "url", page.Url, "depth", page.Depth)
 		if page.Depth < maxDepth {
 			for _, link := range page.Links {
 
 				if !cr.IsVisited(link) {
 					counter.Add(1)
 					select {
-					case jobs <- crawler.PageDepth{Url: link, Depth: page.Depth + 1, Parent: page.Url}:
+					case jobs <- crawler.PageDepth{Url: link, Depth: page.Depth + 1}:
 					case <-ctx.Done():
 						counter.Add(-1)
 					}

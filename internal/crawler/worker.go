@@ -40,11 +40,10 @@ func (crawler *Crawler) Worker(ctx context.Context, jobs chan PageDepth, result 
 			//crawler.Logger.Info("worker result", "url", job.Url, "links", len(links), "title", title)
 
 			result <- &Page{
-				Url:    job.Url,
-				Title:  title,
-				Parent: job.Parent,
-				Links:  links,
-				Depth:  job.Depth,
+				Url:   job.Url,
+				Title: title,
+				Links: links,
+				Depth: job.Depth,
 			}
 		}
 

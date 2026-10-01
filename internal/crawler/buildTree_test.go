@@ -50,7 +50,7 @@ func TestBuildTree(t *testing.T) {
 				},
 			},
 			startUrls: []string{"https://test.com"},
-			maxDepth:  1,
+			maxDepth:  2,
 			want: []Tree{
 				{
 					Resource: "https://test.com",
@@ -78,7 +78,7 @@ func TestBuildTree(t *testing.T) {
 			want:      []Tree{},
 		},
 		{
-			name: "loop(a->b->a)",
+			name: "loop(A->B->A)",
 			pages: map[string]*Page{
 				"https://test.com": {
 					Url:   "https://test.com",
@@ -94,7 +94,7 @@ func TestBuildTree(t *testing.T) {
 				},
 			},
 			startUrls: []string{"https://test.com"},
-			maxDepth:  1,
+			maxDepth:  2,
 			want: []Tree{
 				{
 					Resource: "https://test.com",
@@ -104,6 +104,137 @@ func TestBuildTree(t *testing.T) {
 							Resource: "https://test.com/page",
 							Title:    "page",
 							Links:    []Tree{},
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "loop(A->A)",
+			pages: map[string]*Page{
+				"https://test.com": {
+					Url:   "https://test.com",
+					Title: "test",
+					Depth: 0,
+					Links: []string{"https://test.com"},
+				},
+			},
+			startUrls: []string{"https://test.com"},
+			maxDepth:  2,
+			want: []Tree{
+				{
+					Resource: "https://test.com",
+					Title:    "test",
+					Links:    []Tree{},
+				},
+			},
+		},
+		{
+			name: "graph",
+			pages: map[string]*Page{
+				"A": {
+					Url:   "A",
+					Title: "A",
+					Depth: 0,
+					Links: []string{"B", "C"},
+				},
+				"B": {
+					Url:   "B",
+					Title: "B",
+					Depth: 1,
+					Links: []string{"A", "B", "C", "D"},
+				},
+				"C": {
+					Url:   "C",
+					Title: "C",
+					Depth: 1,
+					Links: []string{"A", "B", "C", "D", "E"},
+				},
+				"D": {
+					Url:   "D",
+					Title: "D",
+					Depth: 2,
+					Links: []string{"E"},
+				},
+				"E": {
+					Url:   "E",
+					Title: "E",
+					Depth: 2,
+					Links: []string{},
+				},
+			},
+			startUrls: []string{"A"},
+			maxDepth:  3,
+			want: []Tree{
+				{
+					Resource: "A",
+					Title:    "A",
+					Links: []Tree{
+						{
+							Resource: "B",
+							Title:    "B",
+							Links: []Tree{
+								{
+									Resource: "C",
+									Title:    "C",
+									Links: []Tree{
+										{
+											Resource: "D",
+											Title:    "D",
+											Links:    []Tree{},
+										},
+										{
+											Resource: "E",
+											Title:    "E",
+											Links:    []Tree{},
+										},
+									},
+								},
+								{
+									Resource: "D",
+									Title:    "D",
+									Links: []Tree{
+										{
+											Resource: "E",
+											Title:    "E",
+											Links:    []Tree{},
+										},
+									},
+								},
+							},
+						},
+						{
+							Resource: "C",
+							Title:    "C",
+							Links: []Tree{
+								{
+									Resource: "B",
+									Title:    "B",
+									Links: []Tree{
+										{
+											Resource: "D",
+											Title:    "D",
+											Links:    []Tree{},
+										},
+									},
+								},
+								{
+									Resource: "D",
+									Title:    "D",
+									Links: []Tree{
+										{
+											Resource: "E",
+											Title:    "E",
+											Links:    []Tree{},
+										},
+									},
+								},
+								{
+									Resource: "E",
+									Title:    "E",
+									Links:    []Tree{},
+								},
+							},
 						},
 					},
 				},

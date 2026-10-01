@@ -24,6 +24,7 @@ func TestBuildTree(t *testing.T) {
 		name      string
 		pages     map[string]*Page
 		startUrls []string
+		maxDepth  int
 		want      []Tree
 	}{
 		{
@@ -52,6 +53,7 @@ func TestBuildTree(t *testing.T) {
 				},
 			},
 			startUrls: []string{"https://test.com"},
+			maxDepth:  1,
 			want: []Tree{
 				{
 					Resource: "https://test.com",
@@ -75,6 +77,7 @@ func TestBuildTree(t *testing.T) {
 			name:      "empty start urls",
 			pages:     map[string]*Page{},
 			startUrls: []string{},
+			maxDepth:  1,
 			want:      []Tree{},
 		},
 		{
@@ -96,6 +99,7 @@ func TestBuildTree(t *testing.T) {
 				},
 			},
 			startUrls: []string{"https://test.com"},
+			maxDepth:  1,
 			want: []Tree{
 				{
 					Resource: "https://test.com",
@@ -118,7 +122,7 @@ func TestBuildTree(t *testing.T) {
 
 			crawler := newTestCrawler(t)
 
-			got := crawler.BuildTree(tt.pages, tt.startUrls)
+			got := crawler.BuildTree(tt.pages, tt.startUrls, tt.maxDepth)
 			if !reflect.DeepEqual(tt.want, got) {
 				t.Errorf("Get invalid answer: want = %+v, got = %+v", tt.want, got)
 			}

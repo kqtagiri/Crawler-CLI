@@ -76,6 +76,13 @@ func main() {
 
 	}
 
+	for _, Url := range startUrls {
+
+		counter.Add(1)
+		jobs <- crawler.PageDepth{Url: Url, Depth: 0, Parent: ""}
+
+	}
+
 	go func() {
 
 		for counter.Load() > 0 {
@@ -97,17 +104,10 @@ func main() {
 
 	}()
 
-	for _, Url := range startUrls {
-
-		counter.Add(1)
-		jobs <- crawler.PageDepth{Url: Url, Depth: 0, Parent: ""}
-
-	}
-
 	for page := range resultChan {
 
 		pages[page.Url] = page
-		cr.Logger.Info("page stored", "url", page.Url, "depth", page.Depth, "parent", page.Parent)
+		//cr.Logger.Info("page stored", "url", page.Url, "depth", page.Depth, "parent", page.Parent)
 		if page.Depth < maxDepth {
 			for _, link := range page.Links {
 
@@ -127,7 +127,7 @@ func main() {
 
 	}
 
-	result := cr.BuildTree(pages, startUrls)
+	result := cr.BuildTree(pages, startUrls, maxDepth)
 
 	data, err := json.MarshalIndent(result, "", "    ")
 	if err != nil {

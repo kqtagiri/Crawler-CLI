@@ -37,7 +37,7 @@ func (crawler *Crawler) Worker(ctx context.Context, jobs chan PageDepth, result 
 			links := ExtractLinks(nil, seen, doc, base)
 			title, _ := ExtractTitle(doc)
 
-			crawler.Logger.Info("worker result", "url", job.Url, "links", len(links), "title", title)
+			//crawler.Logger.Info("worker result", "url", job.Url, "links", len(links), "title", title)
 
 			result <- &Page{
 				Url:    job.Url,

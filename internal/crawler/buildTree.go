@@ -1,6 +1,6 @@
 package crawler
 
-func (crawler *Crawler) BuildTree(pages map[string]*Page, startUrls []string) []Tree {
+func (crawler *Crawler) BuildTree(pages map[string]*Page, startUrls []string, maxDepth int) []Tree {
 
 	result := []Tree{}
 
@@ -11,21 +11,30 @@ func (crawler *Crawler) BuildTree(pages map[string]*Page, startUrls []string) []
 			continue
 		}
 
-		var draw func(page *Page, depth int) Tree
-		draw = func(page *Page, depth int) Tree {
+		path := map[string]bool{currPage.Url: true}
 
-			crawler.Logger.Info("build tree", "url", page.Url, "depth", depth)
+		var draw func(page *Page, path map[string]bool, depth int) Tree
+		draw = func(page *Page, path map[string]bool, depth int) Tree {
+
+			//crawler.Logger.Info("build tree", "url", page.Url, "depth", depth)
 
 			tree := Tree{Resource: page.Url, Title: page.Title, Links: []Tree{}}
+
+			if depth >= maxDepth {
+				return tree
+			}
+
 			for _, link := range page.Links {
 
 				child, ok := pages[link]
-				if !ok {
+				if !ok || child == nil {
 					continue
 				}
 
-				if child.Parent == page.Url {
-					tree.Links = append(tree.Links, draw(pages[link], depth+1))
+				if !path[link] {
+					path[link] = true
+					tree.Links = append(tree.Links, draw(pages[link], path, depth+1))
+					delete(path, link)
 				}
 
 			}
@@ -34,7 +43,7 @@ func (crawler *Crawler) BuildTree(pages map[string]*Page, startUrls []string) []
 
 		}
 
-		result = append(result, draw(currPage, 0))
+		result = append(result, draw(currPage, path, 0))
 
 	}
 

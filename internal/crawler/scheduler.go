@@ -2,8 +2,7 @@ package crawler
 
 import (
 	"context"
-	"sync/atomic"
-	"time"
+	"sync"
 )
 
 type Scheduler struct {
@@ -11,7 +10,7 @@ type Scheduler struct {
 	Jobs       chan PageDepth
 	ResultChan chan *Page
 	MaxDepth   int
-	Counter    atomic.Int64
+	TaskWg     sync.WaitGroup
 }
 
 func NewScheduler(crawler *Crawler, resultChan chan *Page, maxDepth int) *Scheduler {
@@ -21,7 +20,7 @@ func NewScheduler(crawler *Crawler, resultChan chan *Page, maxDepth int) *Schedu
 		Jobs:       make(chan PageDepth, 1000),
 		ResultChan: resultChan,
 		MaxDepth:   maxDepth,
-		Counter:    atomic.Int64{},
+		TaskWg:     sync.WaitGroup{},
 	}
 
 }
@@ -30,7 +29,7 @@ func (sch *Scheduler) Run(ctx context.Context, startUrls []string, pages map[str
 
 	for _, Url := range startUrls {
 
-		sch.Counter.Add(1)
+		sch.TaskWg.Add(1)
 		sch.Jobs <- PageDepth{Url: Url, Depth: 0}
 
 	}
@@ -38,48 +37,42 @@ func (sch *Scheduler) Run(ctx context.Context, startUrls []string, pages map[str
 	done := make(chan struct{})
 	go func() {
 
-		defer close(done)
-
-		for {
-
-			if sch.Counter.Load() <= 0 {
-				close(sch.Jobs)
-				return
-			}
-
-			select {
-			case <-ctx.Done():
-				close(sch.Jobs)
-				return
-			default:
-				time.Sleep(100 * time.Millisecond)
-			}
-
-		}
+		sch.TaskWg.Wait()
+		close(done)
 
 	}()
 
-	for page := range sch.ResultChan {
+	for {
 
-		pages[page.Url] = page
-		if page.Depth < sch.MaxDepth {
-			for _, link := range page.Links {
+		select {
+		case page, ok := <-sch.ResultChan:
+			if !ok {
+				return
+			}
+			pages[page.Url] = page
+			if page.Depth < sch.MaxDepth {
+				for _, link := range page.Links {
 
-				if !sch.crawler.IsVisited(link) {
-					sch.Counter.Add(1)
-					select {
-					case sch.Jobs <- PageDepth{Url: link, Depth: page.Depth + 1}:
-					case <-ctx.Done():
-						continue
+					if !sch.crawler.IsVisited(link) {
+						sch.TaskWg.Add(1)
+						select {
+						case sch.Jobs <- PageDepth{Url: link, Depth: page.Depth + 1}:
+						case <-ctx.Done():
+							sch.TaskWg.Done()
+							close(sch.Jobs)
+							return
+						}
+
 					}
 
 				}
-
 			}
+			sch.TaskWg.Done()
+		case <-done:
+			close(sch.Jobs)
+			return
 		}
 
 	}
-
-	<-done
 
 }

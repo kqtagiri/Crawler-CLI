@@ -37,7 +37,7 @@ func TestRunCancelBeforeStart(t *testing.T) {
 	for range workersCount {
 
 		wg.Add(1)
-		go crawler.Worker(ctx, sch.Jobs, sch.ResultChan, &sch.Counter, &wg)
+		go crawler.Worker(ctx, sch.Jobs, sch.ResultChan, &sch.TaskWg, &wg)
 
 	}
 
@@ -90,7 +90,7 @@ func TestRunCancelWhileAddingChildren(t *testing.T) {
 	for range workersCount {
 
 		wg.Add(1)
-		go crawler.Worker(ctx, sch.Jobs, sch.ResultChan, &sch.Counter, &wg)
+		go crawler.Worker(ctx, sch.Jobs, sch.ResultChan, &sch.TaskWg, &wg)
 
 	}
 

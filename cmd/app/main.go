@@ -62,7 +62,7 @@ func main() {
 	maxDepth := *depthFlag
 
 	workersCount := 10
-	wg := sync.WaitGroup{}
+	workerWg := sync.WaitGroup{}
 
 	resultChan := make(chan *crawler.Page, 1000)
 	sch := crawler.NewScheduler(cr, resultChan, maxDepth)
@@ -70,8 +70,8 @@ func main() {
 	pages := map[string]*crawler.Page{}
 	for range workersCount {
 
-		wg.Add(1)
-		go cr.Worker(ctx, sch.Jobs, sch.ResultChan, &sch.Counter, &wg)
+		workerWg.Add(1)
+		go cr.Worker(ctx, sch.Jobs, sch.ResultChan, &sch.TaskWg, &workerWg)
 
 	}
 
@@ -84,7 +84,7 @@ func main() {
 
 	}()
 
-	wg.Wait()
+	workerWg.Wait()
 	close(sch.ResultChan)
 
 	schWg.Wait()

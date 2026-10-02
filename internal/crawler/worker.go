@@ -4,12 +4,11 @@ import (
 	"context"
 	"net/url"
 	"sync"
-	"sync/atomic"
 )
 
-func (crawler *Crawler) Worker(ctx context.Context, jobs <-chan PageDepth, result chan<- *Page, counter *atomic.Int64, wg *sync.WaitGroup) {
+func (crawler *Crawler) Worker(ctx context.Context, jobs <-chan PageDepth, result chan<- *Page, taskWg *sync.WaitGroup, workerWg *sync.WaitGroup) {
 
-	defer wg.Done()
+	defer workerWg.Done()
 
 	for {
 
@@ -23,13 +22,13 @@ func (crawler *Crawler) Worker(ctx context.Context, jobs <-chan PageDepth, resul
 
 			doc, err := crawler.CreateRequest(ctx, job.Url)
 			if err != nil {
-				counter.Add(-1)
+				taskWg.Done()
 				continue
 			}
 
 			base, err := url.Parse(job.Url)
 			if err != nil {
-				counter.Add(-1)
+				taskWg.Done()
 				continue
 			}
 
@@ -37,13 +36,18 @@ func (crawler *Crawler) Worker(ctx context.Context, jobs <-chan PageDepth, resul
 			links := ExtractLinks(nil, seen, doc, base)
 			title, _ := ExtractTitle(doc)
 
-			result <- &Page{
+			select {
+			case result <- &Page{
 				Url:   job.Url,
 				Title: title,
 				Links: links,
 				Depth: job.Depth,
+			}:
+			case <-ctx.Done():
+				taskWg.Done()
+				return
 			}
-			counter.Add(-1)
+
 		}
 
 	}

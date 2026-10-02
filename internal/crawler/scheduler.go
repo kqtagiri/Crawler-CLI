@@ -29,6 +29,10 @@ func (sch *Scheduler) Run(ctx context.Context, startUrls []string, pages map[str
 
 	for _, Url := range startUrls {
 
+		if sch.crawler.IsVisited(Url) {
+			continue
+		}
+
 		sch.TaskWg.Add(1)
 		sch.Jobs <- PageDepth{Url: Url, Depth: 0}
 

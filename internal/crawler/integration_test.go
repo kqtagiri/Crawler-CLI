@@ -12,12 +12,20 @@ import (
 
 func TestIntegration(t *testing.T) {
 
+	mtx := sync.Mutex{}
+	counts := map[string]int{}
+
 	crawler := newTestCrawler(t)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		mtx.Lock()
+		counts[r.URL.Path]++
+		mtx.Unlock()
+
 		switch r.URL.Path {
 		case "/":
 			w.Write([]byte(`<html><head><title>Home</title></head>
@@ -48,6 +56,7 @@ func TestIntegration(t *testing.T) {
 		default:
 			w.WriteHeader(404)
 		}
+
 	})
 
 	srv := httptest.NewServer(handler)
@@ -83,6 +92,16 @@ func TestIntegration(t *testing.T) {
 	close(sch.ResultChan)
 
 	schWg.Wait()
+
+	mtx.Lock()
+	for path, count := range counts {
+
+		if count != 1 {
+			t.Errorf("Get invalid answer: want = 1 request to %s, got = %d", path, count)
+		}
+
+	}
+	mtx.Unlock()
 
 	want := []Tree{
 		{

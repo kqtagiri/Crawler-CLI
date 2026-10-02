@@ -58,7 +58,16 @@ func main() {
 	Logger := slog.New(handler)
 	cr := crawler.NewCrawler(*reqTimeoutFlag, Logger)
 
-	startUrls := strings.Split(*urlFlag, ",")
+	startUrls := []string{}
+	seen := map[string]bool{}
+	for _, url := range strings.Split(*urlFlag, ",") {
+
+		if !seen[url] {
+			seen[url] = true
+			startUrls = append(startUrls, url)
+		}
+
+	}
 	maxDepth := *depthFlag
 
 	workersCount := 10
